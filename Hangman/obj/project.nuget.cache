@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "z7SOeQ8Ib7TAbZM50hNzeryBh+G+DwUcQOZRMq9H8rQ1Am3hjHnukqq+ihMmtWDNJMXgq7pYi6YUD7/fMRj3TQ==",
+  "dgSpecHash": "ILocppj0wz5tCGCOnaI20VzdUjr/0P7rn8Y83kx3ruZPLG/DucSXQyg5jldZOQIwZdMGMp/Vn2hQgY5Rr7X9iQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\olive\\Documents\\School\\A-Level\\Subjects\\CS\\TestCSharp\\Hangman\\Hangman\\Hangman.csproj",
+  "projectFilePath": "C:\\Users\\sophi\\Source\\Repos\\Hangman\\Hangman\\Hangman.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
