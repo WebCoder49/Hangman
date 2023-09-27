@@ -4,12 +4,6 @@ namespace Hangman
 {
    internal class GameStatus
    {
-        public static void Main(string[] args)
-        {
-
-
-        }
-
         public static Boolean OutOfGuesses(int number_of_guesses, int word_len)
         {
             if (number_of_guesses < word_len)
