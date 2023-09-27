@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\J0-0\\.nuget\\packages\\": {}
+    "C:\\Users\\sophi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\J0-0\\RiderProjects\\Hangman\\Hangman\\Hangman.csproj",
+      "projectUniqueName": "C:\\Users\\sophi\\Source\\Repos\\Hangman\\Hangman\\Hangman.csproj",
       "projectName": "Hangman",
-      "projectPath": "C:\\Users\\J0-0\\RiderProjects\\Hangman\\Hangman\\Hangman.csproj",
-      "packagesPath": "C:\\Users\\J0-0\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\J0-0\\RiderProjects\\Hangman\\Hangman\\obj\\",
+      "projectPath": "C:\\Users\\sophi\\Source\\Repos\\Hangman\\Hangman\\Hangman.csproj",
+      "packagesPath": "C:\\Users\\sophi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sophi\\Source\\Repos\\Hangman\\Hangman\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\J0-0\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sophi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -61,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
