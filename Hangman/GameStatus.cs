@@ -4,18 +4,20 @@ namespace Hangman
 {
    internal class GameStatus
    {
-        public static Boolean OutOfGuesses(int number_of_guesses, int word_len)
+        // Checks if the player is out of guesses
+        public static Boolean OutOfGuesses(int number_of_guesses)
         {
-            if (number_of_guesses < word_len)
-            {
-                return true;
-            }
-            else
+            if (number_of_guesses <= 9)
             {
                 return false;
             }
+            else
+            {
+                return true;
+            }
         }
 
+        // Checks if the word has been guessed
         public static Boolean WordGuessed(string guess, string word)
         {
             if (guess == word)
@@ -28,16 +30,29 @@ namespace Hangman
             }
         }
 
+        // Checks if the guess is valid
         public static Boolean IsGuessValid(char letter_guess, List<char> l)
         {
-            foreach (char guess in l)
+            int count = 0;
+            if (letter_guess is char)
             {
-                if (guess == letter_guess)
+                foreach (char guess in l)
                 {
-                    return false;
+                    if (guess == letter_guess)
+                    {
+                        count += 1;
+                    }
                 }
+                
+                if (count == 0)
+                {
+                    return true;
+                }
+
             }
-            return true;
+
+            return false;
+           
         }
     }
 }
