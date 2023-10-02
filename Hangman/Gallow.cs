@@ -4,8 +4,6 @@ namespace Hangman
 {
     internal class Gallow
     {
-        int num = 9;
-        Console.WriteLine(DrawGallow(num));
 
         // takes the number of wrong guesses(int) and display the gallow
         public static string DrawGallow(int a)
