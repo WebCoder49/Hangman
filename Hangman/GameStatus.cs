@@ -35,25 +35,38 @@ namespace Hangman
         public static Boolean IsGuessValid(char letter_guess, List<char> l)
         {
             int count = 0;
-            if (letter_guess is char)
+            
+            foreach (char guess in l)
             {
-                foreach (char guess in l)
+                if (guess == letter_guess)
                 {
-                    if (guess == letter_guess)
-                    {
-                        count += 1;
-                    }
+                    count += 1;
                 }
-                
-                if (count == 0)
-                {
-                    return true;
-                }
-
             }
+                
+            if (count == 0 && char.IsLetter(letter_guess))
+            {
+                return true;
+            }
+
+            
 
             return false;
            
+        }
+
+        // returns guess as upper case if guess is valid
+
+        public static Char ReturnUpperCase(char guess, List<char> l)
+        {
+            char upperGuess;
+            if (IsGuessValid(guess, l))
+            {
+                upperGuess = char.ToUpper(guess);
+                return upperGuess;
+            }
+
+            return '0';
         }
     }
 }

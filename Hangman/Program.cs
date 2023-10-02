@@ -16,7 +16,7 @@ namespace Hangman
             // Console.WriteLine(GameStatus.IsGuessValid('h', new List<char>{ 't', 'i', 'o' }));
             // Console.WriteLine(GameStatus.OutOfGuesses(7));
             // Console.WriteLine(GameStatus.WordGuessed("hello", "hello"));
-
+            //Console.WriteLine(GameStatus.ReturnUpperCase('7', new List<char> { 't', 'i', 'o' }));
 
         }
     }
