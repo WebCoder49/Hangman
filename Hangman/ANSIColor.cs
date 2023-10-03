@@ -4,6 +4,7 @@ namespace Hangman
 {
     internal class ANSIColor
     {
+        // ANSI Color Escapes from https://en.wikipedia.org/wiki/ANSI_escape_code#Colors 
         public const string RESET = "\x1b[0m";
         public const string BOLD = "\x1b[1m";
         
