@@ -4,7 +4,7 @@ namespace Hangman
 {
     internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             // TEST WordPicker
             // WordPicker wordPicker = new();
@@ -24,6 +24,7 @@ namespace Hangman
             // }
 
             WordPicker wordPicker = new();
+<<<<<<< HEAD
             Game(wordPicker.PickWord(WordPicker.Difficulty.Easy));
 
             static void Game(string wordStr)
@@ -101,6 +102,132 @@ namespace Hangman
 
                 return letterIndexes;
             }
+=======
+            // Game loop
+            while (true)
+            {
+                Console.Write($"\n###########\n# {ANSIColor.DISPLAY}HANGMAN{ANSIColor.RESET} #\n###########\n\n");
+                // Ask for difficulty
+                WordPicker.Difficulty difficulty = WordPicker.Difficulty.Unset;
+                while (difficulty == WordPicker.Difficulty.Unset)
+                {
+                    Console.Write($"{ANSIColor.PROMPT}Word difficulty ([E]asy, [M]edium, [H]ard, or [Q]uit Game):{ANSIColor.RESET} ");
+                    string difficultyStr = Console.ReadLine().Trim().ToUpper();
+                    if (difficultyStr == "EASY" || difficultyStr == "E")
+                    {
+                        difficulty = WordPicker.Difficulty.Easy;
+                    }
+                    else if (difficultyStr == "MEDIUM" || difficultyStr == "M")
+                    {
+                        difficulty = WordPicker.Difficulty.Medium;
+                    } else if (difficultyStr == "HARD" || difficultyStr == "H")
+                    {
+                        difficulty = WordPicker.Difficulty.Hard;
+                    } else if (difficultyStr == "QUIT GAME" || difficultyStr == "QUIT" || difficultyStr == "Q")
+                    {
+                        return;
+                    }
+                }
+
+                string? word = wordPicker.PickWord(difficulty);
+                if (word == null)
+                {
+                    Console.WriteLine("Couldn't get word.");
+                }
+                else
+                {
+                    Game((string)word);
+                }
+            }
+>>>>>>> 807a49e0d00dfe4737be1e84b41fa7cd766b791c
+        }
+
+        public static void Game(string wordStr)
+            {
+                List<char> word = new(wordStr);
+                char[] guessedWord = new char [word.Count];
+                // Copy length of word to guessedWord as underscore characters
+                for (int i = 0; i < word.Count; i++)
+                {
+                    guessedWord[i] = '_';
+                }
+
+                int guesses = 0;
+                List<char> wrongLetters = new();
+                while (true) // Return to break out of loop
+                {
+                    Console.Clear();
+
+                    // TODO (ahe127) Display letters and dashes
+                    Console.Write($"Wrong letters:   {ANSIColor.BAD}");
+                    Console.Write(String.Join($"{ANSIColor.RESET}, {ANSIColor.BAD}", wrongLetters));
+                    Console.WriteLine($"{ANSIColor.RESET}");
+                    Console.Write($"Correct letters: ");
+                    for (int i = 0; i < guessedWord.Length; i++)
+                    {
+                        if (guessedWord[i] == '_')
+                        {
+                            Console.Write("_");
+                        }
+                        else
+                        {
+                            Console.Write(ANSIColor.GOOD+guessedWord[i]+ANSIColor.RESET);
+                        }
+                    }
+                    Console.WriteLine();
+
+                    Console.Write(Gallow.DrawGallow(guesses));
+
+                    if (GameStatus.WordGuessed(new String(guessedWord), wordStr))
+                    {
+                        Console.WriteLine($"{ANSIColor.GOOD}You Guessed Correctly!{ANSIColor.RESET}");
+                        return; // Won
+                    }
+
+                    Console.Write($"{ANSIColor.PROMPT}Enter your guess for a letter:{ANSIColor.RESET} ");
+                    char guessedLetter = Console.ReadLine().ToUpper()[0];
+                    // TODO (SophiaNass) Validate
+
+                    if (GameStatus.IsGuessValid(guessedLetter, wrongLetters))
+                    {
+
+                        List<int> letterIndexes = GetLetterIndexes(guessedLetter, word);
+                        for (int i = 0; i < letterIndexes.Count; i++)
+                        {
+                            guessedWord[letterIndexes[i]] = guessedLetter;
+                        }
+
+                        if (letterIndexes.Count == 0)
+                        {
+                            // Letter not in word
+                            wrongLetters = wrongLetters.Append(guessedLetter).ToList();
+
+                            guesses++;
+                            if (GameStatus.OutOfGuesses(guesses))
+                            {
+                                Console.Clear();
+                                Console.WriteLine($"The word was:\n\t{ANSIColor.DISPLAY}{wordStr}{ANSIColor.RESET}");
+                                Console.Write(Gallow.DrawGallow(guesses));
+                                return; // Lost
+                            }
+                        }
+                    }
+                }
+            }
+
+            public static List<int> GetLetterIndexes(char chr, List<char> word)
+            {
+                // TODO (ahe127) replace with your function
+                List<int> letterIndexes = new();
+                for (int i = 0; i < word.Count; i++)
+                {
+                    if (word[i] == chr)
+                    {
+                        letterIndexes = letterIndexes.Append(i).ToList();
+                    }
+                }
+
+                return letterIndexes;
+            }
         }
     }
-}

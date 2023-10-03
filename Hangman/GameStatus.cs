@@ -8,7 +8,7 @@ namespace Hangman
         // Checks if the player is out of guesses
         public static Boolean OutOfGuesses(int number_of_guesses)
         {
-            if (number_of_guesses <= 9)
+            if (number_of_guesses <= 8)
             {
                 return false;
             }
