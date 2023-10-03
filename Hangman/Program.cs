@@ -6,6 +6,10 @@ namespace Hangman
     {
         public static void Main(string[] args)
         {
+            //foreach(var i in (Gallow.ListOfIncorrectGuesses('h', "gallow")))
+            //{
+                //Console.WriteLine(i);
+            //}
             // TEST WordPicker
             // WordPicker wordPicker = new();
             // Console.WriteLine($"Easy: {wordPicker.PickWord(WordPicker.Difficulty.Easy)}, {wordPicker.PickWord(WordPicker.Difficulty.Easy)}, {wordPicker.PickWord(WordPicker.Difficulty.Easy)}, {wordPicker.PickWord(WordPicker.Difficulty.Easy)}, {wordPicker.PickWord(WordPicker.Difficulty.Easy)}, {wordPicker.PickWord(WordPicker.Difficulty.Easy)}, {wordPicker.PickWord(WordPicker.Difficulty.Easy)}\nMedium: {wordPicker.PickWord(WordPicker.Difficulty.Medium)}\nHard: {wordPicker.PickWord(WordPicker.Difficulty.Hard)}");
@@ -22,7 +26,7 @@ namespace Hangman
             //     Console.WriteLine($"Guess #{i}");
             //     Console.Write(Gallow.DrawGallow(i));
             // }
-
+            
             WordPicker wordPicker = new();
 <<<<<<< HEAD
             Game(wordPicker.PickWord(WordPicker.Difficulty.Easy));
@@ -227,7 +231,10 @@ namespace Hangman
                     }
                 }
 
-                return letterIndexes;
+                return letterIndexes; 
+
+
+
             }
         }
     }
