@@ -20,7 +20,8 @@ namespace Hangman
         {
             Easy,
             Medium,
-            Hard
+            Hard,
+            Unset
         }
         public string? PickWord(Difficulty difficulty)
         {
@@ -28,20 +29,25 @@ namespace Hangman
             StreamReader reader;
             int numWords;
             HashSet<int> takenIndexes;
-            if (difficulty == Difficulty.Easy)
-            { 
-                reader = new StreamReader("../../../resources/easy.txt"); // From bin/Debug/net7.0
-                numWords = 2135; // Hardcoded for efficiency
-                takenIndexes = _takenIndexesEasy;
-            } else if (difficulty == Difficulty.Medium)
+            switch (difficulty)
             {
-                reader = new StreamReader("../../../resources/medium.txt"); // From bin/Debug/net7.0
-                numWords = 663; // Hardcoded for efficiency
-                takenIndexes = _takenIndexesMedium;
-            } else {
-                reader = new StreamReader("../../../resources/hard.txt"); // From bin/Debug/net7.0
-                numWords = 519; // Hardcoded for efficiency
-                takenIndexes = _takenIndexesHard;
+                case Difficulty.Easy:
+                    reader = new StreamReader("../../../resources/easy.txt"); // From bin/Debug/net7.0
+                    numWords = 2135; // Hardcoded for efficiency
+                    takenIndexes = _takenIndexesEasy;
+                    break;
+                case Difficulty.Medium: 
+                    reader = new StreamReader("../../../resources/medium.txt"); // From bin/Debug/net7.0
+                    numWords = 663; // Hardcoded for efficiency
+                    takenIndexes = _takenIndexesMedium;
+                    break;
+                case Difficulty.Hard:
+                    reader = new StreamReader("../../../resources/hard.txt"); // From bin/Debug/net7.0
+                    numWords = 519; // Hardcoded for efficiency
+                    takenIndexes = _takenIndexesHard;
+                    break;
+                default:
+                    return null;
             }
             
             // Get random word (each on a separate line)
