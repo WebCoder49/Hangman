@@ -78,6 +78,7 @@ namespace Hangman
 
                 int guesses = 0;
                 List<char> wrongLetters = new();
+                List<char> correctLetters = new();
                 while (true) // Return to break out of loop
                 {
                     Console.Clear();
@@ -109,9 +110,13 @@ namespace Hangman
                     }
 
                     Console.Write($"{ANSIColor.PROMPT}Enter your guess for a letter:{ANSIColor.RESET} ");
-                    char guessedLetter = Console.ReadLine().ToUpper()[0];
-                    // TODO (SophiaNass) Validate
-
+                    char? guessedLetterOrNull = GameStatus.ReturnUpperCase(Console.ReadLine(), wrongLetters, correctLetters);
+                    while(guessedLetterOrNull == null){
+                        Console.Write($"{ANSIColor.PROMPT}That was invalid or already used. Please enter it again: ");
+                        guessedLetterOrNull = GameStatus.ReturnUpperCase(Console.ReadLine(), wrongLetters, correctLetters);
+                    }
+                    // TODO (SophiaNass) Validate guessedLetter
+                    char guessedLetter = (char)guessedLetterOrNull;
                     if (GameStatus.IsGuessValid(guessedLetter, wrongLetters))
                     {
 
@@ -121,21 +126,27 @@ namespace Hangman
                             guessedWord[letterIndexes[i]] = guessedLetter;
                         }
 
-                        if (letterIndexes.Count == 0)
-                        {
-                            // Letter not in word
-                            wrongLetters = wrongLetters.Append(guessedLetter).ToList();
+                    if (letterIndexes.Count == 0)
+                    {
+                        // Letter not in word
+                        wrongLetters = wrongLetters.Append(guessedLetter).ToList();
 
-                            guesses++;
-                            if (GameStatus.OutOfGuesses(guesses))
-                            {
-                                Console.Clear();
-                                Console.WriteLine($"The word was:\n\t{ANSIColor.DISPLAY}{wordStr}{ANSIColor.RESET}");
-                                Console.Write(Gallow.DrawGallow(guesses));
-                                return; // Lost
-                            }
+
+                        guesses++;
+                        if (GameStatus.OutOfGuesses(guesses))
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"The word was:\n\t{ANSIColor.DISPLAY}{wordStr}{ANSIColor.RESET}");
+                            Console.Write(Gallow.DrawGallow(guesses));
+                            return; // Lost
                         }
                     }
+                    else
+                    {
+                        correctLetters = correctLetters.Append(guessedLetter).ToList();
+
+                    }
+                }
                 }
             }
 
