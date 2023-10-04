@@ -91,11 +91,11 @@ namespace Hangman
                     {
                         if (guessedWord[i] == '_')
                         {
-                            Console.Write("_");
+                            Console.Write("_ ");
                         }
                         else
                         {
-                            Console.Write(ANSIColor.GOOD+guessedWord[i]+ANSIColor.RESET);
+                            Console.Write(ANSIColor.GOOD+guessedWord[i]+" "+ANSIColor.RESET);
                         }
                     }
                     Console.WriteLine();
