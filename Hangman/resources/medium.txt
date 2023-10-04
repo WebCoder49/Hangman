@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿﻿abdominal
+abdominal
 absorption
 accelerate
 acceleration
@@ -1182,4 +1181,3 @@ confrontation
 reluctance
 surveillance
 realizable
->>>>>>> 807a49e0d00dfe4737be1e84b41fa7cd766b791c
