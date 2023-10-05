@@ -34,6 +34,22 @@ namespace Hangman
 
             return incorrectGuesses;
         }
+
+        public static Boolean IsNumValid(string b)
+        {
+            bool IsNumeric;
+            IsNumeric = int.TryParse(b, out _);
+            if (IsNumeric==true  )
+            {
+                int B = Convert.ToInt32(b);
+                if (B > 1)
+                {
+                    return true;
+                }
+                
+            }
+            return false;
+        }
     }
 
 

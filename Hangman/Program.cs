@@ -36,8 +36,9 @@ namespace Hangman
                 WordPicker.Difficulty difficulty = WordPicker.Difficulty.Unset;
                 while (difficulty == WordPicker.Difficulty.Unset)
                 {
-                    Console.Write($"{ANSIColor.PROMPT}Word difficulty ([E]asy, [M]edium, [H]ard, or [Q]uit Game):{ANSIColor.RESET} ");
+                    Console.Write($"{ANSIColor.PROMPT}Word difficulty ([E]asy, [M]edium, [H]ard, m[U]ltiplayer sor [Q]uit Game):{ANSIColor.RESET} ");
                     string difficultyStr = Console.ReadLine().Trim().ToUpper();
+                    int NumofPlayer = 1;
                     if (difficultyStr == "EASY" || difficultyStr == "E")
                     {
                         difficulty = WordPicker.Difficulty.Easy;
@@ -45,12 +46,26 @@ namespace Hangman
                     else if (difficultyStr == "MEDIUM" || difficultyStr == "M")
                     {
                         difficulty = WordPicker.Difficulty.Medium;
-                    } else if (difficultyStr == "HARD" || difficultyStr == "H")
+                    }
+                    else if (difficultyStr == "HARD" || difficultyStr == "H")
                     {
                         difficulty = WordPicker.Difficulty.Hard;
-                    } else if (difficultyStr == "QUIT GAME" || difficultyStr == "QUIT" || difficultyStr == "Q")
+                    }
+                    else if (difficultyStr == "QUIT GAME" || difficultyStr == "QUIT" || difficultyStr == "Q")
                     {
                         return;
+                    }
+                    else if (difficultyStr == "MULTIPLAYER" || difficultyStr =="U" || difficultyStr == "MULTI")
+                    {
+                        string InputNumofPlayer;
+                        Console.Write("How many players?");
+                        InputNumofPlayer  = Console.ReadLine();
+                        if (Gallow.IsNumValid(InputNumofPlayer) == true)
+                        {
+                            NumofPlayer = Convert.ToInt32(InputNumofPlayer);
+                        }
+                        
+
                     }
                 }
 
