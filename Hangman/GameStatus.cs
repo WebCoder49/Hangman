@@ -82,7 +82,7 @@ namespace Hangman
         public static char? ReturnUpperCase(string guess, List<char> l, List<char> d)
         {
             guess = guess.Trim().ToUpper();
-            if (guess.Length == 0)
+            if (guess.Length == 0 || guess.Length > 1)
             {
                 return null;
             }

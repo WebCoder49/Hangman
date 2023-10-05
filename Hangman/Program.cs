@@ -112,7 +112,7 @@ namespace Hangman
                     Console.Write($"{ANSIColor.PROMPT}Enter your guess for a letter:{ANSIColor.RESET} ");
                     char? guessedLetterOrNull = GameStatus.ReturnUpperCase(Console.ReadLine(), wrongLetters, correctLetters);
                     while(guessedLetterOrNull == null){
-                        Console.Write($"{ANSIColor.PROMPT}That was invalid or already used. Please enter it again: ");
+                        Console.Write($"{ANSIColor.PROMPT}That was invalid or already used. Please enter it again: {ANSIColor.RESET}");
                         guessedLetterOrNull = GameStatus.ReturnUpperCase(Console.ReadLine(), wrongLetters, correctLetters);
                     }
                     // TODO (SophiaNass) Validate guessedLetter
