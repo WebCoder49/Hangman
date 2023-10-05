@@ -29,6 +29,7 @@ namespace Hangman
             
             WordPicker wordPicker = new();
             // Game loop
+            int NumofPlayer = 1;
             while (true)
             {
                 Console.Write($"\n###########\n# {ANSIColor.DISPLAY}HANGMAN{ANSIColor.RESET} #\n###########\n\n");
@@ -38,7 +39,7 @@ namespace Hangman
                 {
                     Console.Write($"{ANSIColor.PROMPT}Word difficulty ([E]asy, [M]edium, [H]ard, m[U]ltiplayer sor [Q]uit Game):{ANSIColor.RESET} ");
                     string difficultyStr = Console.ReadLine().Trim().ToUpper();
-                    int NumofPlayer = 1;
+                    
                     if (difficultyStr == "EASY" || difficultyStr == "E")
                     {
                         difficulty = WordPicker.Difficulty.Easy;
@@ -77,7 +78,7 @@ namespace Hangman
                 else
                 {
                     // TODO (cheng-chengccc) Make work with UI asking number of players + allow players to enter other players' words
-                    Game(new []{(string)word, (string)wordPicker.PickWord(difficulty)}, 2);
+                    Game(new []{(string)word, (string)wordPicker.PickWord(difficulty)}, NumofPlayer);
                 }
             }
         }

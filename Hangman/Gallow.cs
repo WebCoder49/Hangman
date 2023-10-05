@@ -37,9 +37,7 @@ namespace Hangman
 
         public static Boolean IsNumValid(string b)
         {
-            bool IsNumeric;
-            IsNumeric = int.TryParse(b, out _);
-            if (IsNumeric==true  )
+            if (int.TryParse(b, out _) == true  )
             {
                 int B = Convert.ToInt32(b);
                 if (B > 1)
