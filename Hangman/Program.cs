@@ -29,6 +29,7 @@ namespace Hangman
             
             WordPicker wordPicker = new();
             // Game loop
+            int NumofPlayer = 1;
             while (true)
             {
                 Console.Write($"\n###########\n# {ANSIColor.DISPLAY}HANGMAN{ANSIColor.RESET} #\n###########\n\n");
@@ -36,8 +37,9 @@ namespace Hangman
                 WordPicker.Difficulty difficulty = WordPicker.Difficulty.Unset;
                 while (difficulty == WordPicker.Difficulty.Unset)
                 {
-                    Console.Write($"{ANSIColor.PROMPT}Word difficulty ([E]asy, [M]edium, [H]ard, or [Q]uit Game):{ANSIColor.RESET} ");
+                    Console.Write($"{ANSIColor.PROMPT}Word difficulty ([E]asy, [M]edium, [H]ard, m[U]ltiplayer sor [Q]uit Game):{ANSIColor.RESET} ");
                     string difficultyStr = Console.ReadLine().Trim().ToUpper();
+                    
                     if (difficultyStr == "EASY" || difficultyStr == "E")
                     {
                         difficulty = WordPicker.Difficulty.Easy;
@@ -45,15 +47,29 @@ namespace Hangman
                     else if (difficultyStr == "MEDIUM" || difficultyStr == "M")
                     {
                         difficulty = WordPicker.Difficulty.Medium;
-                    } else if (difficultyStr == "HARD" || difficultyStr == "H")
+                    }
+                    else if (difficultyStr == "HARD" || difficultyStr == "H")
                     {
                         difficulty = WordPicker.Difficulty.Hard;
-                    } else if (difficultyStr == "QUIT GAME" || difficultyStr == "QUIT" || difficultyStr == "Q")
+                    }
+                    else if (difficultyStr == "QUIT GAME" || difficultyStr == "QUIT" || difficultyStr == "Q")
                     {
                         return;
                     }
+                    else if (difficultyStr == "MULTIPLAYER" || difficultyStr =="U" || difficultyStr == "MULTI")
+                    {
+                        string InputNumofPlayer;
+                        Console.Write("How many players?");
+                        InputNumofPlayer  = Console.ReadLine();
+                        if (Gallow.IsNumValid(InputNumofPlayer) == true)
+                        {
+                            NumofPlayer = Convert.ToInt32(InputNumofPlayer);
+                        }
+                        
+                    }
                 }
 
+                // TODO: Add multiplayer functionality / choose 1 word for 1 player
                 string? word = wordPicker.PickWord(difficulty);
                 if (word == null)
                 {
@@ -61,7 +77,8 @@ namespace Hangman
                 }
                 else
                 {
-                    Game((string)word);
+                    // TODO (cheng-chengccc) Make work with UI asking number of players + allow players to enter other players' words
+                    Game(new []{(string)word, (string)wordPicker.PickWord(difficulty)}, NumofPlayer);
                 }
             }
         }
@@ -78,75 +95,131 @@ namespace Hangman
 
                 int guesses = 0;
                 List<char> wrongLetters = new();
-                List<char> correctLetters = new();
                 while (true) // Return to break out of loop
                 {
                     Console.Clear();
 
                     // TODO (ahe127) Display letters and dashes
-                    Console.Write($"Wrong letters:   {ANSIColor.BAD}");
-                    Console.Write(String.Join($"{ANSIColor.RESET}, {ANSIColor.BAD}", wrongLetters));
-                    Console.WriteLine($"{ANSIColor.RESET}");
-                    Console.Write($"Correct letters: ");
-                    for (int i = 0; i < guessedWord.Length; i++)
+                    if (playerI >= numPlayers && !displayUIOnly)
                     {
-                        if (guessedWord[i] == '_')
+                        if (!stillPlayingThisRound)
                         {
-                            Console.Write("_");
+                            // No more players playing
+                            if (numPlayers > 1)
+                            {
+                                DisplayLeaderboard(numRoundsToWin);
+                            }
+                            return;
+                        }
+                        playerI = 0;
+                        // Next round
+                        roundNumber++;
+                        stillPlayingThisRound = false;
+                    }
+
+                    if (numRoundsToWin[playerI] != 0)
+                    {
+                        // Finished game - go on to next player
+                        playerI++;
+                        continue;
+                    }
+                    stillPlayingThisRound = true;
+
+                    // Display player number with a hashtag UI.
+                    string hashtags = "";
+                    int numHashtagsBefore = (19 * playerI) / numPlayers;
+                    int numHashtagsAfter = (19 * (numPlayers - playerI - 1)) / numPlayers;
+                    int numHashtagsHighlighted = 19 - numHashtagsBefore - numHashtagsAfter;
+                    for (int i = 0; i < numHashtagsBefore; i++)
+                    {
+                        hashtags += '#';
+                    }
+                    hashtags += ANSIColor.DISPLAY;
+                    for (int i = 0; i < numHashtagsHighlighted; i++)
+                    {
+                        hashtags += '#';
+                    }
+                    hashtags += ANSIColor.RESET;
+                    for (int i = 0; i < numHashtagsAfter; i++)
+                    {
+                        hashtags += '#';
+                    }
+                    string leftHashtag = "#";
+                    if (numHashtagsBefore == 0) leftHashtag = ANSIColor.DISPLAY + leftHashtag + ANSIColor.RESET;
+                    string rightHashtag = "#";
+                    if (numHashtagsAfter == 0) rightHashtag = ANSIColor.DISPLAY + rightHashtag + ANSIColor.RESET;
+                    Console.WriteLine($"{hashtags}\n{leftHashtag} Player {ANSIColor.DISPLAY}{playerI + 1}{ANSIColor.RESET}'s turn {rightHashtag}\n{hashtags}\n");
+                    
+                    // Display wrong letters already guessed
+                    Console.Write($"Wrong letters:   {ANSIColor.BAD}");
+                    Console.Write(String.Join($"{ANSIColor.RESET}, {ANSIColor.BAD}", wrongLetters[playerI]));
+                    Console.WriteLine($"{ANSIColor.RESET}");
+                    
+                    // Display correct letters
+                    Console.Write($"Correct letters: ");
+                    for (int i = 0; i < guessedWord[playerI].Length; i++)
+                    {
+                        if (guessedWord[playerI][i] == '_')
+                        {
+                            Console.Write("_ ");
                         }
                         else
                         {
-                            Console.Write(ANSIColor.GOOD+guessedWord[i]+ANSIColor.RESET);
+                            Console.Write(ANSIColor.GOOD+guessedWord[playerI][i]+" "+ANSIColor.RESET);
                         }
                     }
                     Console.WriteLine();
 
-                    Console.Write(Gallow.DrawGallow(guesses));
+                    Console.Write(Gallow.DrawGallow(guesses[playerI]));
 
-                    if (GameStatus.WordGuessed(new String(guessedWord), wordStr))
+                    if (GameStatus.WordGuessed(new String(guessedWord[playerI]), wordsStr[playerI]))
                     {
                         Console.WriteLine($"{ANSIColor.GOOD}You Guessed Correctly!{ANSIColor.RESET}");
-                        return; // Won
+                        numRoundsToWin[playerI] = roundNumber;
+                        playerI++;
+                        WaitForKeypressGameEnded(numPlayers);
+                        continue; // Won
+                    }
+
+                    if (displayUIOnly)
+                    {
+                        // Just show UI.
+                        playerI++;
+                        
+                        Console.Write($"{ANSIColor.PROMPT}Press ANY KEY for player {(playerI + 2)%numPlayers}: {ANSIColor.RESET}"); // Next player: +1 as 0-indexed to 1-indexed; +1 as next player; %numPlayers so turns work
+                        Console.ReadKey();
+                        displayUIOnly = false;
+                        continue; // Next iteration - don't let guess be inputted.
                     }
 
                     Console.Write($"{ANSIColor.PROMPT}Enter your guess for a letter:{ANSIColor.RESET} ");
-                    char? guessedLetterOrNull = GameStatus.ReturnUpperCase(Console.ReadLine(), wrongLetters, correctLetters);
-                    while(guessedLetterOrNull == null){
-                        Console.Write($"{ANSIColor.PROMPT}That was invalid or already used. Please enter it again: {ANSIColor.RESET}");
-                        guessedLetterOrNull = GameStatus.ReturnUpperCase(Console.ReadLine(), wrongLetters, correctLetters);
-                    }
-                    // TODO (SophiaNass) Validate guessedLetter
-                    char guessedLetter = (char)guessedLetterOrNull;
+                    char guessedLetter = Console.ReadLine().ToUpper()[0];
+                    // TODO (SophiaNass) Validate
+
                     if (GameStatus.IsGuessValid(guessedLetter, wrongLetters))
                     {
 
-                        List<int> letterIndexes = GetLetterIndexes(guessedLetter, word);
+                        List<int> letterIndexes = GetLetterIndexes(guessedLetter, word[playerI]);
                         for (int i = 0; i < letterIndexes.Count; i++)
                         {
-                            guessedWord[letterIndexes[i]] = guessedLetter;
+                            guessedWord[playerI][letterIndexes[i]] = guessedLetter;
                         }
 
-                    if (letterIndexes.Count == 0)
-                    {
-                        // Letter not in word
-                        wrongLetters = wrongLetters.Append(guessedLetter).ToList();
-
-
-                        guesses++;
-                        if (GameStatus.OutOfGuesses(guesses))
+                        if (letterIndexes.Count == 0)
                         {
-                            Console.Clear();
-                            Console.WriteLine($"The word was:\n\t{ANSIColor.DISPLAY}{wordStr}{ANSIColor.RESET}");
-                            Console.Write(Gallow.DrawGallow(guesses));
-                            return; // Lost
+                            // Letter not in word
+                            wrongLetters = wrongLetters.Append(guessedLetter).ToList();
+
+                            guesses++;
+                            if (GameStatus.OutOfGuesses(guesses))
+                            {
+                                Console.Clear();
+                                Console.WriteLine($"The word was:\n\t{ANSIColor.DISPLAY}{wordStr}{ANSIColor.RESET}");
+                                Console.Write(Gallow.DrawGallow(guesses));
+                                return; // Lost
+                            }
                         }
                     }
-                    else
-                    {
-                        correctLetters = correctLetters.Append(guessedLetter).ToList();
-
-                    }
-                }
                 }
             }
 
@@ -163,9 +236,64 @@ namespace Hangman
                 }
 
                 return letterIndexes; 
-
-
-
             }
-        }
+
+            public static void WaitForKeypressGameEnded(int numPlayers)
+            {
+                
+                if (numPlayers > 1)
+                {
+                    Console.Write($"{ANSIColor.PROMPT}Press ANY KEY to let the other players keep playing:{ANSIColor.RESET} ");
+                }
+                else
+                {
+                    Console.Write($"{ANSIColor.PROMPT}Press ANY KEY to end the game:{ANSIColor.RESET} ");
+                }
+                Console.ReadKey();
+            }
+
+            public static void DisplayLeaderboard(int[] numRounds)
+            {
+                
+                // numRounds: Each item represents players in order,
+                // and is 0 if they haven't finished, -1 if they ran
+                // out of guesses and the number of guesses it took
+                // them to finish otherwise.
+                
+                // Move num rounds per player to num rounds indexed where each item is tuple (numRounds, player index)
+                Tuple<int,int>[] numRoundsIndexed = new Tuple<int,int>[numRounds.Length];
+                for (int i = 0; i < numRounds.Length; i++)
+                {
+                    numRoundsIndexed[i] = new Tuple<int, int>(numRounds[i], i);
+                }
+                
+                Array.Sort<Tuple<int,int>>(numRoundsIndexed, (a, b) =>
+                {
+                    // Descending order so returned-value meanings reversed
+                    if (a.Item1 == b.Item1)
+                    {
+                        return 0;
+                    }
+                    else if (a.Item1 < b.Item1)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                });
+                for (int i = 0; i < numRounds.Length; i++)
+                {
+                    if (numRoundsIndexed[i].Item1 == -1)
+                    {
+                        Console.WriteLine($"Player {numRoundsIndexed[i].Item2+1}: {ANSIColor.DISPLAY}Ran out of guesses{ANSIColor.RESET}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Player {numRoundsIndexed[i].Item2+1}: took {ANSIColor.DISPLAY}{numRoundsIndexed[i].Item1}{ANSIColor.RESET} guesses");
+                    }
+                }
+            }
     }
+}

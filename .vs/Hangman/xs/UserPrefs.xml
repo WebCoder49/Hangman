@@ -1,24 +1,21 @@
 ﻿<Properties GitUserInfo="UsingGIT" StartupConfiguration="{38994F86-ADE2-4B2A-BACD-0AE00181D1DC}|Default">
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.Hangman PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hangman/Gallow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hangman/Program.cs">
     <Files>
-      <File FileName="Hangman/Program.cs" Line="11" Column="346" />
-      <File FileName="Hangman/GameStatus.cs" Line="44" Column="18" />
-      <File FileName="Hangman/WordPicker.cs" Line="4" Column="1" />
-      <File FileName="Hangman/Gallow.cs" Line="21" Column="17" />
+      <File FileName="Hangman/Program.cs" Line="212" Column="1" />
+      <File FileName="Hangman/GameStatus.cs" Line="1" Column="1" />
+      <File FileName="Hangman/WordPicker.cs" Line="1" Column="1" />
+      <File FileName="Hangman/Gallow.cs" Line="39" Column="10" />
       <File FileName="Hangman/ANSIColor.cs" Line="1" Column="1" />
       <File FileName="Hangman/obj/Debug/net7.0/Hangman.assets.cache" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="Hangman" expanded="True">
+          <Node name="Hangman">
             <Node name="Hangman">
-              <Node name="Dependencies" expanded="True">
-                <Node name="FrameworkReferences" expanded="True" />
-              </Node>
-              <Node name="Gallow.cs" selected="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>

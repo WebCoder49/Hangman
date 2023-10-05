@@ -13,10 +13,9 @@ namespace Hangman
             return Gallow[a];
         }
 
-        public static List<char> ListOfIncorrectGuesses(char guess, string word)
+        public static List<char> UpdateIncorrectGuesses(char guess, string word, List<char> incorrectGuesses)
         {
             int count = 0;
-            List<char> incorrectGuesses = new List<char>();
             char.ToString(guess);
             
             
@@ -34,6 +33,20 @@ namespace Hangman
             }
 
             return incorrectGuesses;
+        }
+
+        public static Boolean IsNumValid(string b)
+        {
+            if (int.TryParse(b, out _) == true  )
+            {
+                int B = Convert.ToInt32(b);
+                if (B > 1)
+                {
+                    return true;
+                }
+                
+            }
+            return false;
         }
     }
 
