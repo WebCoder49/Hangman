@@ -65,7 +65,6 @@ namespace Hangman
                             NumofPlayer = Convert.ToInt32(InputNumofPlayer);
                         }
                         
-
                     }
                 }
 
