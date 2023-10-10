@@ -13,26 +13,27 @@ namespace Hangman
             return Gallow[a];
         }
 
-        public static List<char> UpdateIncorrectGuesses(char guess, string word, List<char> incorrectGuesses)
+        public static List<int> GetLetterIndexes(char guess, string word, ref List<char> incorrectGuesses)
         {
             int count = 0;
-            char.ToString(guess);
-            
-            
+            List<int> letterIndexes = new();
 
+            int i = 0;
             foreach(var g in word)
             {
                 if (guess == g)
                 {
                     count += 1;
-                    
+                    letterIndexes.Add(i);
                 }
+
+                i += 1;
             }
             if (count == 0){
                 incorrectGuesses.Add(guess);
             }
 
-            return incorrectGuesses;
+            return letterIndexes;
         }
 
         public static Boolean IsNumValid(string b)
