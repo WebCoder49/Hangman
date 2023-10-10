@@ -61,11 +61,11 @@ namespace Hangman
                         string InputNumofPlayer;
                         Console.Write("How many players?");
                         InputNumofPlayer  = Console.ReadLine();
-                        if (Gallow.IsNumValid(InputNumofPlayer) == true)
+                        while (!Gallow.IsNumValid(InputNumofPlayer) == true)
                         {
-                            NumofPlayer = Convert.ToInt32(InputNumofPlayer);
+                            InputNumofPlayer  = Console.ReadLine();
                         }
-                        
+                        NumofPlayer = Convert.ToInt32(InputNumofPlayer);
                     }
                 }
 
@@ -77,24 +77,40 @@ namespace Hangman
                 }
                 else
                 {
-                    // TODO (cheng-chengccc) Make work with UI asking number of players + allow players to enter other players' words
-                    Game(new []{(string)word, (string)wordPicker.PickWord(difficulty)}, NumofPlayer);
+                    Game(new []{(string)word, (string)wordPicker.PickWord(difficulty)}, NumofPlayer); // TODO: ensure right num of words
                 }
             }
         }
 
-        public static void Game(string wordStr)
-            {
-                List<char> word = new(wordStr);
-                char[] guessedWord = new char [word.Count];
-                // Copy length of word to guessedWord as underscore characters
-                for (int i = 0; i < word.Count; i++)
+         public static void Game(string[] wordsStr, int numPlayers) // TODO: Test w/ 1 player; fix no char entered
+        {
+                bool displayUIOnly = false; // Show UI without possibility of entering letter after each go for multiplayer mode when true
+                int roundNumber = 1; // 1 letter guessed (correct or wrong) in 1st round
+                bool stillPlayingThisRound = true; // True if players are still playing this round
+                
+                // Arrays - one item per player
+                int[] numRoundsToWin = new int[numPlayers]; // Each item represents players in order, and is 0 if they haven't finished, -1 if they ran out of guesses and the number of guesses it took them to finish otherwise.
+                List<char>[] word = new List<char>[numPlayers];
+                char[][] guessedWord = new char[numPlayers][];
+                int[] guesses = new int[numPlayers];
+                List<char>[] wrongLetters = new List<char>[numPlayers];
+                
+                for (int player = 0; player < numPlayers; player++)
                 {
-                    guessedWord[i] = '_';
+                    // Set up variables
+                    numRoundsToWin[player] = 0;
+                    guesses[player] = 0;
+                    wrongLetters[player] = new();
+                    word[player] =  new List<char>(wordsStr[player]);
+                    // Copy length of word to guessedWord as underscore characters
+                    guessedWord[player] = new char[word[player].Count];
+                    for (int i = 0; i < word[player].Count; i++)
+                    {
+                        guessedWord[player][i] = '_';
+                    }
                 }
-
-                int guesses = 0;
-                List<char> wrongLetters = new();
+                
+                int playerI = 0; // 0-indexed
                 while (true) // Return to break out of loop
                 {
                     Console.Clear();
@@ -196,7 +212,7 @@ namespace Hangman
                     char guessedLetter = Console.ReadLine().ToUpper()[0];
                     // TODO (SophiaNass) Validate
 
-                    if (GameStatus.IsGuessValid(guessedLetter, wrongLetters))
+                    if (GameStatus.IsGuessValid(guessedLetter, wrongLetters[playerI]))
                     {
 
                         List<int> letterIndexes = GetLetterIndexes(guessedLetter, word[playerI]);
@@ -208,17 +224,26 @@ namespace Hangman
                         if (letterIndexes.Count == 0)
                         {
                             // Letter not in word
-                            wrongLetters = wrongLetters.Append(guessedLetter).ToList();
+                            wrongLetters[playerI] = wrongLetters[playerI].Append(guessedLetter).ToList();
 
-                            guesses++;
-                            if (GameStatus.OutOfGuesses(guesses))
+                            guesses[playerI]++;
+                            if (GameStatus.OutOfGuesses(guesses[playerI]))
                             {
                                 Console.Clear();
-                                Console.WriteLine($"The word was:\n\t{ANSIColor.DISPLAY}{wordStr}{ANSIColor.RESET}");
-                                Console.Write(Gallow.DrawGallow(guesses));
-                                return; // Lost
+                                Console.WriteLine($"The word was:\n\t{ANSIColor.DISPLAY}{wordsStr[playerI]}{ANSIColor.RESET}");
+                                Console.Write(Gallow.DrawGallow(guesses[playerI]));
+                                numRoundsToWin[playerI] = -1;
+                                playerI++;
+                                WaitForKeypressGameEnded(numPlayers);
+                                continue; // Lost
                             }
                         }
+                    }
+
+                    if (numPlayers > 1)
+                    {
+                        // Show result with a UI-only, no-input loop after guess in multiplayer
+                        displayUIOnly = true;
                     }
                 }
             }
